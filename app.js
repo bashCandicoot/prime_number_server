@@ -20,11 +20,15 @@ function binarySearchLocalPrimes(primes, number) {
     middle = Math.floor((start + end) / 2);
   }
 
-  const ceiling = primes[middle + 1];
-  const floor = primes[middle];
+  const higherPrime = primes[middle + 1];
+  const lowerPrime = primes[middle];
 
   // check which prime our number is closest to
-  return ceiling - number < number - floor ? ceiling : floor;
+  return higherPrime - number < number - lowerPrime ? higherPrime : lowerPrime;
+}
+
+function findNearestHigherPrime(number) {
+
 }
 
 function findNearestLowerPrime(primes, number) {
@@ -51,8 +55,16 @@ function findNearestPrime(number) {
   const localPrime = binarySearchLocalPrimes(localPrimes, number);
   if (localPrime !== -1) return localPrime;
 
-  // num is greater than 7919
-  return findHigherThanLocalPrime(localPrimes, number);
+  // num is greater than biggest local prime
+  const lowerPrime = findNearestLowerPrime(localPrimes, number);
+  const lowerPrimeDiff = number - lowerPrime;
+
+  const higherPrime = findNearestHigherPrime(number, lowerPrimeDiff);
+  if (higherPrime !== -1) return higherPrime;
+
+  return lowerPrime;
+
+  // return higherPrimeDiff - number < number - lowerPrimeDiff ? higherPrime : lowerPrime;
 }
 
 app.get('/nearest-prime/:number', (req, res) => {
