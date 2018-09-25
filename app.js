@@ -17,12 +17,19 @@ function binarySearchLocalPrimes(list, number) {
     else { start = middle + 1; }
     middle = Math.floor((start + end) / 2);
   }
-  return list[middle];
+
+  const ceiling = list[middle + 1];
+  const floor = list[middle];
+
+  // check which element our number is closest to
+  return ceiling - number < number - floor ? ceiling : floor;
 }
 
 function findNearestPrime(number) {
   const localPrime = binarySearchLocalPrimes(localPrimes, number);
   if (localPrime !== -1) return localPrime;
+
+  // calculateNextPrime(number)
 }
 
 app.get('/nearest-prime/:number', (req, res) => {
