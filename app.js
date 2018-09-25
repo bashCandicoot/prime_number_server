@@ -1,6 +1,5 @@
 require('dotenv').config({ path: '.env' });
 const _ = require('lodash');
-const localPrimesOld = require('./localPrimes');
 const localPrimes = require('./localPrimes2');
 
 const express = require('express');
@@ -27,19 +26,40 @@ function binarySearchLocalPrimes(primes, number) {
   return higherPrime - number < number - lowerPrime ? higherPrime : lowerPrime;
 }
 
-function findNearestHigherPrime(number) {
+function isPrime(number) {
+  const sqrt = Math.sqrt(number);
+  for (let i = 2; i <= sqrt; i++) {
+    if (number % i === 0) return false;
+  }
+  return true;
+}
 
+function findNearestHigherPrime(number, lowerPrimeDiff) {
+  // const primesBelowNumber = _.filter(localPrimes, prime => (prime > sqrt ? false : prime));
+  // const notPrime = _.some(primesBelowNumber, (prime) => {
+  //   if (number % prime === 0) return true;
+  //   return false;
+  // });
+  // if (!notPrime) return number;
+
+  // need to use local primes before running isPrime
+  // as long as highest local prime is lower than sqrt of number
+  for (let i = 0; i <= lowerPrimeDiff; i++) {
+    if (isPrime(number)) return number;
+  }
+
+  return -1;
 }
 
 function findNearestLowerPrime(primes, number) {
-  const numberSqrt = Math.floor(Math.sqrt(number));
+  const sqrt = Math.sqrt(number);
 
   const sieve = {};
   for (let i = 2; i <= number; i++) {
     sieve[i] = true;
   }
 
-  for (let i = 2; i < numberSqrt; i++) {
+  for (let i = 2; i < sqrt; i++) {
     if (sieve[i]) {
       for (let j = i ** 2; j <= number; j += i) {
         delete sieve[j];
@@ -55,20 +75,19 @@ function findNearestPrime(number) {
   const localPrime = binarySearchLocalPrimes(localPrimes, number);
   if (localPrime !== -1) return localPrime;
 
-  // num is greater than biggest local prime
   const lowerPrime = findNearestLowerPrime(localPrimes, number);
   const lowerPrimeDiff = number - lowerPrime;
 
-  const higherPrime = findNearestHigherPrime(number, lowerPrimeDiff);
+  const higherPrime = findNearestHigherPrime(number + 1, lowerPrimeDiff);
+  const higherPrimeDiff = higherPrime - number;
+
+  if (lowerPrimeDiff === higherPrimeDiff) return `${lowerPrime} and ${higherPrime} are both as near!`;
   if (higherPrime !== -1) return higherPrime;
-
   return lowerPrime;
-
-  // return higherPrimeDiff - number < number - lowerPrimeDiff ? higherPrime : lowerPrime;
 }
 
 app.get('/nearest-prime/:number', (req, res) => {
-  const { number } = req.params;
+  const number = Number(req.params.number);
 
   if (isNaN(number)) return res.send({ message: `${number} is not a valid number` });
 
