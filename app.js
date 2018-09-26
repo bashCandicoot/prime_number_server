@@ -61,7 +61,7 @@ function findNearestHigherPrime(number, lowerPrimeDiff) {
   // need to use local primes before running isPrime
   // as long as highest local prime is lower than sqrt of number
   for (let i = 0; i <= lowerPrimeDiff; i++) {
-    if (isPrime(number)) return number;
+    if (isPrime(number)) return [number];
   }
 
   return -1;
