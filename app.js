@@ -1,13 +1,25 @@
 require('dotenv').config({ path: '.env' });
 const _ = require('lodash');
-const localPrimes = require('./localPrimes2');
-
 const express = require('express');
+const fs = require('fs');
 
 const app = express();
 
+function readLocalPrimes() {
+  return new Promise(((resolve) => {
+    resolve(fs.readFileSync('./localPrimes.csv', { encoding: 'utf8' }));
+  }));
+}
+
+function writeLocalPrimes(primes) {
+  fs.writeFile('./localPrimes.csv', primes, 'utf8', (err) => {
+    if (err) console.error('Didn\'t write primes to .csv file');
+  });
+}
+
 function binarySearchLocalPrimes(primes, number) {
-  if (number > primes[primes.length - 1]) return -1;
+  const biggestLocalPrime = primes[primes.length - 2];
+  if (number > biggestLocalPrime) return -1;
 
   let start = 0;
   let end = primes.length - 1;
@@ -22,8 +34,12 @@ function binarySearchLocalPrimes(primes, number) {
   const higherPrime = primes[middle + 1];
   const lowerPrime = primes[middle];
 
+  const higherDiff = Math.abs(number - higherPrime);
+  const lowerDiff = Math.abs(number - lowerPrime);
+
   // check which prime our number is closest to
-  return higherPrime - number < number - lowerPrime ? higherPrime : lowerPrime;
+  if (lowerDiff === higherDiff) return [lowerPrime, higherPrime];
+  return lowerDiff < higherDiff ? [lowerPrime] : [higherPrime];
 }
 
 function isPrime(number) {
@@ -68,10 +84,13 @@ function findNearestLowerPrime(primes, number) {
   }
 
   const sievedPrimes = [...Object.keys(sieve)];
-  return sievedPrimes[sievedPrimes.length - 1];
+  writeLocalPrimes(sievedPrimes.join(','));
+
+  const biggestSievedPrime = sievedPrimes[sievedPrimes.length - 1];
+  return Number(biggestSievedPrime);
 }
 
-function findNearestPrime(number) {
+function findNearestPrime(localPrimes, number) {
   const localPrime = binarySearchLocalPrimes(localPrimes, number);
   if (localPrime !== -1) return localPrime;
 
@@ -81,20 +100,23 @@ function findNearestPrime(number) {
   const higherPrime = findNearestHigherPrime(number + 1, lowerPrimeDiff);
   const higherPrimeDiff = higherPrime - number;
 
-  if (lowerPrimeDiff === higherPrimeDiff) return `${lowerPrime} and ${higherPrime} are both as near!`;
+  if (lowerPrimeDiff === higherPrimeDiff) return [lowerPrime, higherPrime];
   if (higherPrime !== -1) return higherPrime;
   return lowerPrime;
 }
 
-app.get('/nearest-prime/:number', (req, res) => {
+app.get('/nearest-prime/:number', async (req, res) => {
+  const data = await readLocalPrimes();
+  const localPrimes = data.split(',').map(Number);
+
   const number = Number(req.params.number);
 
-  if (isNaN(number)) return res.send({ message: `${number} is not a valid number` });
+  if (isNaN(number)) return res.send({ nearestPrime: [-1] });
 
-  else if (number <= 2) return res.send({ nearestPrime: 2 });
+  else if (number <= 2) return res.send({ nearestPrime: [2] });
 
-  res.send({ nearestPrime: findNearestPrime(number) });
+  return res.send({ nearestPrime: findNearestPrime(localPrimes, number) });
 });
 
-app.set('port', process.env.PORT);
+app.set('port', 8081);
 app.listen(app.get('port'));
