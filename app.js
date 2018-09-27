@@ -1,6 +1,5 @@
 require('dotenv').config({ path: '.env' });
 const express = require('express');
-const fs = require('fs');
 
 const PrimeService = require('./PrimeService');
 
