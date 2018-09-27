@@ -1,4 +1,4 @@
-const PrimeService = require('./PrimeService');
+const PrimeService = require('./src/PrimeService');
 const should = require('should');
 const { assert } = require('chai');
 
