@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "./node_modules/nodemon/bin/nodemon.js app.js --exec 'npm run lint && node'",
+    "start": "node src/app.js",
+    "dev": "./node_modules/nodemon/bin/nodemon.js src/app.js --exec 'npm run lint && node'",
     "lint": "./node_modules/.bin/eslint **/*.js",
     "test": "mocha"
   },
@@ -24,10 +24,10 @@
     "chai": "^4.1.2",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
-    "lodash": "^4.17.11",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.4",
-    "should": "^13.2.3"
+    "should": "^13.2.3",
+    "typescript": "^3.1.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
