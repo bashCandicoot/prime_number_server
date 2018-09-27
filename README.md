@@ -4,8 +4,9 @@ Node/Express app that calculates and returns the nearest prime number to a given
   
 Setup:  
 
-```npm install``` 
-```npm start``` 
+```npm install```  
+
+```npm start```  
 
 Run:  
 
