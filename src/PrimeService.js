@@ -2,7 +2,7 @@ const fs = require('fs');
 
 class PrimeService {
   constructor(number) {
-    this.number = number || -1;
+    this.number = Number(number) || -1;
     this.primes = [];
   }
 
@@ -91,8 +91,8 @@ class PrimeService {
   }
 
   findNearestPrime() {
-    if (Number.isNaN(this.number)) return [-1];
-    else if (this.number <= 3) return [2];
+    if (!Number.isInteger(this.number) || Math.sign(this.number) === -1) return [-1]; // eslint-disable-line
+    if (this.number <= 3) return [2];
 
     const localPrime = this.binarySearchLocalPrimes();
     if (localPrime !== -1) return localPrime;
