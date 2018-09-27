@@ -3,7 +3,7 @@ const fs = require('fs');
 
 class PrimeService {
   constructor(number) {
-    this.number = number;
+    this.number = number || -1;
     this.primes = [];
   }
 
