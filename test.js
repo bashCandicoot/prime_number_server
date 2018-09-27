@@ -15,9 +15,14 @@ describe('PrimeService', () => {
   });
 
   it('should return a nearest prime of [2]', () => {
-    const prime = new PrimeService();
+    const prime = new PrimeService(2);
     const nearestPrime = prime.findNearestPrime();
+
+    const prime2 = new PrimeService(3);
+    const nearestPrime2 = prime.findNearestPrime();
+
     JSON.stringify(nearestPrime).should.equal(JSON.stringify([2]));
+    JSON.stringify(nearestPrime2).should.equal(JSON.stringify([2]));
   });
 
   it('should return a nearest prime of -1', () => {
