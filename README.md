@@ -4,8 +4,9 @@ Node/Express app that calculates and returns the nearest prime number to a given
   
 Setup:  
 
-```npm install``` 
-```npm start``` 
+```npm install```  
+
+```npm start```  
 
 Run:  
 
@@ -41,7 +42,7 @@ Any found primes will be written to the file ```localPrimes.csv``` so that they 
 
 Problems:  
   
-If you type in a big enough ```number``` then things will go tits up.    
+If you type in a big enough ```number``` then the server will crash.    
   
 To deal with this I'd write any found primes to a NoSQL database, this would stop node from having to store a huge array of primes in the memory heap and also remove the need for a binary search.  
   
