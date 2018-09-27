@@ -91,7 +91,7 @@ class PrimeService {
   }
 
   findNearestPrime() {
-    if (isNaN(this.number)) return [-1];
+    if (Number.isNaN(this.number)) return [-1];
     else if (this.number <= 3) return [2];
 
     const localPrime = this.binarySearchLocalPrimes();
