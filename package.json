@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "./node_modules/nodemon/bin/nodemon.js app.js --exec 'npm run lint && node'",
+    "start": "node app.js",
+    "dev": "./node_modules/nodemon/bin/nodemon.js app.js --exec 'npm run lint && node'",
     "lint": "./node_modules/.bin/eslint **/*.js",
     "test": "mocha"
   },
