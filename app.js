@@ -18,7 +18,7 @@ function writeLocalPrimes(primes) {
 }
 
 function binarySearchLocalPrimes(primes, number) {
-  const biggestLocalPrime = primes[primes.length - 2];
+  const biggestLocalPrime = primes[primes.length - 1];
   if (number > biggestLocalPrime) return -1;
 
   let start = 0;
@@ -33,6 +33,8 @@ function binarySearchLocalPrimes(primes, number) {
 
   const higherPrime = primes[middle + 1];
   const lowerPrime = primes[middle];
+
+  if (!higherPrime) return [lowerPrime];
 
   const higherDiff = Math.abs(number - higherPrime);
   const lowerDiff = Math.abs(number - lowerPrime);
@@ -51,15 +53,6 @@ function isPrime(number) {
 }
 
 function findNearestHigherPrime(number, lowerPrimeDiff) {
-  // const primesBelowNumber = _.filter(localPrimes, prime => (prime > sqrt ? false : prime));
-  // const notPrime = _.some(primesBelowNumber, (prime) => {
-  //   if (number % prime === 0) return true;
-  //   return false;
-  // });
-  // if (!notPrime) return number;
-
-  // need to use local primes before running isPrime
-  // as long as highest local prime is lower than sqrt of number
   for (let i = 0; i <= lowerPrimeDiff; i++) {
     if (isPrime(number)) return [number];
   }
@@ -87,7 +80,7 @@ function findNearestLowerPrime(primes, number) {
   writeLocalPrimes(sievedPrimes.join(','));
 
   const biggestSievedPrime = sievedPrimes[sievedPrimes.length - 1];
-  return Number(biggestSievedPrime);
+  return [Number(biggestSievedPrime)];
 }
 
 function findNearestPrime(localPrimes, number) {
