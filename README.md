@@ -1,6 +1,6 @@
 # Nearest Prime Number (Node.js)  
   
-Node/Express app to the calculates and returns the nearest prime number to a supplied integer.  
+Node/Express app that calculates and returns the nearest prime number to a given integer.  
   
 Setup:  
 
