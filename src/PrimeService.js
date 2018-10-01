@@ -91,8 +91,8 @@ class PrimeService {
   }
 
   findNearestPrime() {
-    if (!Number.isInteger(this.number) || Math.sign(this.number) === -1) return [-1]; // eslint-disable-line
-    if (this.number <= 3) return [2];
+    if (!Number.isInteger(this.number) || Math.sign(this.number) === -1) return [2]; // eslint-disable-line
+    if (this.number < 3) return [2];
 
     const localPrime = this.binarySearchLocalPrimes();
     if (localPrime !== -1) return localPrime;
